@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "604640031007",
+    "firebase_url": "https://super-xdemo-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "super-xdemo",
+    "storage_bucket": "super-xdemo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604640031007:android:e881df4c66151308e3402a",
+        "android_client_info": {
+          "package_name": "com.example.be_project_campus_connect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkMVUo_Mt_cbX4CvVvjYBEGNRGvrPtYLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604640031007:android:c4760d3201010619e3402a",
+        "android_client_info": {
+          "package_name": "com.example.campus_connect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkMVUo_Mt_cbX4CvVvjYBEGNRGvrPtYLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604640031007:android:2475d5d42f7a885de3402a",
+        "android_client_info": {
+          "package_name": "com.example.hod"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkMVUo_Mt_cbX4CvVvjYBEGNRGvrPtYLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604640031007:android:445232ebcea665a8e3402a",
+        "android_client_info": {
+          "package_name": "com.example.students"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkMVUo_Mt_cbX4CvVvjYBEGNRGvrPtYLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604640031007:android:3d0c11c565de4ef7e3402a",
+        "android_client_info": {
+          "package_name": "com.example.teachers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkMVUo_Mt_cbX4CvVvjYBEGNRGvrPtYLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
