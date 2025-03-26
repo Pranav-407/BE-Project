@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:be_project_campus_connect/common%20methods/common_methods.dart';
 import 'package:be_project_campus_connect/services/shared_preference.dart';
+import 'package:be_project_campus_connect/views/teachers/view_tg_batches.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,9 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ElevatedButton(
               onPressed: () {
-                // Navigator.of(context).push(MaterialPageRoute(
-                //   builder: (context) => const ViewTgBatches(),
-                // ));
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ViewTgBatches(),
+                ));
               },
               child: Text('Show my TG batches'),
             ),

@@ -44,7 +44,7 @@ class LoginScreenController extends ChangeNotifier {
       log(password);
 
       DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-          .collection("Users")
+          .collection("Dummy Users")
           .doc(formattedloginID)
           .get();
 

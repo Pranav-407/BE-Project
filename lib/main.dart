@@ -1,4 +1,4 @@
-import 'package:be_project_campus_connect/setup%20initial%20database/download_students_login.dart';
+import 'package:be_project_campus_connect/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DownloadStudentCredentials()
+      home: SplashScreen()
     );
   }
 }

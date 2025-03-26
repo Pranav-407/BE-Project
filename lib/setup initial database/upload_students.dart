@@ -59,35 +59,47 @@ class _UploadStudentsState extends State<UploadStudents> {
                   final alternativeEmail = row[8]?.value.toString() ?? 'Not Available';
                   final parentEmail = row[9]?.value.toString() ?? 'Not Available';
                   final motherMobile = row[10]?.value.toString() ?? 'Not Available';
+                  final division = row[11]?.value.toString() ?? 'Not Available';
+                  final tgBatch = row[12]?.value.toString() ?? 'Not Available';
                   
                   // Format student UID - replace / with -
                   final formattedUID = stesUidNo.replaceAll('/', '-');
-                  
+                  final password = generateRandomPassword();
+
                   // Create student data
                   final studentData = {
+                    'pendingFees': 0,
                     'rollNo': rollNo,
+                    'tgBatch': tgBatch,
                     'prnNo': prnNo,
-                    'stesUidNo': stesUidNo,
+                    'UID': stesUidNo,
                     'name': studentName,
                     'permanentAddress': permAddress,
                     'studentMobile': studentMobile,
                     'parentMobile': parentMobile,
-                    'email': emailAddress,
-                    'alternativeEmail': alternativeEmail,
+                    'SinhgadEmail': emailAddress,
+                    'Email': alternativeEmail,
                     'parentEmail': parentEmail,
                     'motherMobile': motherMobile,
-                    'createdAt': FieldValue.serverTimestamp(),
+                    'division': division,
+                    'password': password,
                   };
                   
                   // Create login data
                   final loginData = {
                     'loginID': stesUidNo,
                     'role': 'student',
-                    'password': generateRandomPassword(),
+                    'password': password,
                     'name': studentName,
                   };
                   
                   log('Processing student: $studentName with UID: $formattedUID');
+                  
+                  // Upload to Firebase - Users collection
+                  await FirebaseFirestore.instance
+                      .collection('Dummy Users')
+                      .doc(formattedUID)
+                      .set(loginData);
                   
                   // Upload to Firebase - Users collection
                   await FirebaseFirestore.instance
@@ -96,6 +108,11 @@ class _UploadStudentsState extends State<UploadStudents> {
                       .set(loginData);
                   
                   // Upload to Firebase - Students collection
+                  await FirebaseFirestore.instance
+                      .collection('Dummy Students')
+                      .doc(formattedUID)
+                      .set(studentData);
+
                   await FirebaseFirestore.instance
                       .collection('Students')
                       .doc(formattedUID)
