@@ -1,4 +1,5 @@
 import 'package:be_project_campus_connect/common%20methods/common_methods.dart';
+import 'package:be_project_campus_connect/setup%20initial%20database/download_students_login.dart';
 import 'package:be_project_campus_connect/views/hod/assign_ct_and_tg.dart';
 import 'package:be_project_campus_connect/views/hod/display_divisions.dart';
 import 'package:be_project_campus_connect/views/hod/pending_fees_students.dart';
@@ -130,6 +131,17 @@ class HomeScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const TeacherAssignmentScreen(),
+                        ));
+                      },
+                    ),
+                    _buildGridItem(
+                      context,
+                      title: 'Download Login credentials',
+                      icon: Icons.person,
+                      color: Colors.blue.shade700,
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const DownloadCredentials(),
                         ));
                       },
                     ),

@@ -4,11 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StudentDetailsScreen extends StatefulWidget {
-  
   final Map<String, dynamic> studentData;
 
-  const StudentDetailsScreen({super.key,required this.studentData});
-   
+  const StudentDetailsScreen({super.key, required this.studentData});
+
   @override
   State<StudentDetailsScreen> createState() => _StudentDetailsScreenState();
 }
@@ -26,7 +25,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
       print('Could not launch $phoneNumber');
     }
   }
-  
+
   // Function to open WhatsApp chat
   Future<void> openWhatsAppChat(String phoneNumber) async {
     // Format phone number for WhatsApp (add country code if needed)
@@ -34,34 +33,35 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     if (!phoneNumber.startsWith('91')) {
       formattedNumber = '91$phoneNumber';
     }
-    
+
     final Uri whatsappUri = Uri.parse('https://api.whatsapp.com/send?phone=$formattedNumber');
-    
+
     if (await canLaunchUrl(whatsappUri)) {
       await launchUrl(whatsappUri, mode: LaunchMode.externalApplication);
     } else {
       print('Could not launch WhatsApp for $phoneNumber');
     }
   }
-  
+
   @override
   void initState() {
     log(widget.studentData.toString());
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
         title: Text(
           'Student Info',
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
       ),
@@ -78,7 +78,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -129,6 +129,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                     _buildInfoRow('Pending Fees', '₹${widget.studentData['pendingFees']}', context: context),
                   ],
                 ),
+                const SizedBox(height: 20), // Bottom padding
               ],
             ),
           ),
@@ -139,17 +140,17 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
 
   Widget _buildStudentHeader(BuildContext context) {
     return Container(
-      height: 230,
       width: double.infinity,
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
             spreadRadius: 2,
-            blurRadius: 6,
-            offset: const Offset(0, 3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -157,9 +158,11 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
         children: [
           CircleAvatar(
             radius: 50,
-            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
+            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.15),
             child: Text(
-              widget.studentData['name'].toString().substring(0, 1),
+              widget.studentData['name'] != null ? 
+                widget.studentData['name'].toString().substring(0, 1).toUpperCase() : 
+                'N',
               style: GoogleFonts.poppins(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
@@ -167,32 +170,35 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Text(
-            widget.studentData['name'],
+            widget.studentData['name'] ?? 'No Name',
             style: GoogleFonts.poppins(
               fontSize: 22,
               fontWeight: FontWeight.w600,
+              color: Colors.grey[800],
             ),
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Text(
-            'Roll No: ${widget.studentData['rollNo']}',
+            'Roll No: ${widget.studentData['rollNo'] ?? 'N/A'}',
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: Colors.grey[600],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              '${widget.studentData['division']}',
+              widget.studentData['division'] ?? 'No Division',
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 color: Theme.of(context).primaryColor,
@@ -212,7 +218,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     required IconData icon,
   }) {
     return Card(
-      elevation: 2,
+      elevation: 3,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -223,25 +229,35 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
           children: [
             Row(
               children: [
-                Icon(
-                  icon,
-                  color: Theme.of(context).primaryColor,
-                  size: 24,
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: Theme.of(context).primaryColor,
+                    size: 20,
+                  ),
                 ),
                 const SizedBox(width: 12),
-                Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).primaryColor,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-              child: Divider(),
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Divider(height: 1),
             ),
             ...children,
           ],
@@ -255,58 +271,78 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     bool isValidPhone = isPhone && 
                          value != null && 
                          value != 'Not Available' &&
+                         value.isNotEmpty &&
                          value.length >= 10;
-    
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 130,
-            child: Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
-              ),
+          Text(
+            label,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[600],
             ),
           ),
-          Expanded(
-            child: Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
                   value ?? 'Not Available',
                   style: GoogleFonts.poppins(
                     fontSize: 15,
                     fontWeight: value != null && value != 'Not Available' ? FontWeight.w500 : FontWeight.normal,
                     color: value != null && value != 'Not Available' ? Colors.grey[800] : Colors.grey[500],
                   ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                if (isValidPhone)
-                  Row(
-                    // mainAxisSize: MainAxisSize.min,
+              ),
+              if (isValidPhone) ...[
+                const SizedBox(width: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.call, color: Theme.of(context).primaryColor),
-                        onPressed: () => makePhoneCall(value),
+                        icon: Icon(
+                          Icons.call,
+                          color: Colors.purple[600],
+                          size: 20,
+                        ),
+                        onPressed: () => makePhoneCall(value!),
                         tooltip: 'Call',
+                        constraints: const BoxConstraints(
+                          minWidth: 40,
+                          minHeight: 40,
+                        ),
                       ),
                       IconButton(
                         icon: Image.asset(
-                          'assets/images/whatsapp_icon.png', 
+                          'assets/images/whatsapp_icon.png',
                           width: 24, 
                           height: 24,
                         ),
-                        onPressed: () => openWhatsAppChat(value),
+                        onPressed: () => openWhatsAppChat(value!),
                         tooltip: 'WhatsApp',
+                        constraints: const BoxConstraints(
+                          minWidth: 40,
+                          minHeight: 40,
+                        ),
                       ),
                     ],
                   ),
+                ),
               ],
-            ),
+            ],
           ),
         ],
       ),

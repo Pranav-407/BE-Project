@@ -105,8 +105,12 @@ class _UploadFeeExcelState extends State<UploadFeeExcel> with SingleTickerProvid
     final firestore = FirebaseFirestore.instance;
     int successCount = 0;
     int notFoundCount = 0;
+    int zeroedCount = 0;
 
     try {
+      // Create a map of document IDs to pending fees from Excel file
+      Map<String, double> excelFeesMap = {};
+      
       for (var data in _processedData!) {
         final studentInfo = data['studentInfo'] as String;
         final parts = studentInfo.split('/');
@@ -115,22 +119,31 @@ class _UploadFeeExcelState extends State<UploadFeeExcel> with SingleTickerProvid
           // Extract the document ID (e.g., 2324-VSKN-12596)
           final idParts = parts.sublist(1);
           final documentId = idParts.join('-');
+          final pendingFees = double.tryParse(data['pendingFees'].toString()) ?? 0;
           
-          final docRef = firestore.collection('Dummy Students').doc(documentId);
-          
-          // Check if document exists
-          final docSnapshot = await docRef.get();
-          
-          if (docSnapshot.exists) {
-            // Update only pending fees for existing document
-            final pendingFees = double.tryParse(data['pendingFees'].toString()) ?? 0;
-            await docRef.update({
-              'pendingFees': pendingFees,
-            });
-            successCount++;
-          } else {
-            notFoundCount++;
-          }
+          excelFeesMap[documentId] = pendingFees;
+        }
+      }
+
+      // Get all documents from the collection
+      final collectionSnapshot = await firestore.collection('Dummy Students').get();
+      
+      for (var doc in collectionSnapshot.docs) {
+        final documentId = doc.id;
+        
+        if (excelFeesMap.containsKey(documentId)) {
+          // Document is in Excel file - update with Excel value
+          final newPendingFees = excelFeesMap[documentId]!;
+          await doc.reference.update({
+            'pendingFees': newPendingFees,
+          });
+          successCount++;
+        } else {
+          // Document is not in Excel file - set pending fees to 0
+          await doc.reference.update({
+            'pendingFees': 0,
+          });
+          zeroedCount++;
         }
       }
 
@@ -140,7 +153,7 @@ class _UploadFeeExcelState extends State<UploadFeeExcel> with SingleTickerProvid
       });
       
       _showCustomSnackBar(
-        'Successfully updated fees for $successCount students. $notFoundCount students not found.',
+        'Successfully updated fees for $successCount students. Set $zeroedCount students to zero fees.',
         duration: 4
       );
     } catch (e) {

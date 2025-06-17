@@ -49,13 +49,15 @@ class LoginScreenController extends ChangeNotifier {
           .get();
 
       String pass = documentSnapshot.get('password');
+      String name = documentSnapshot.get('name');
       String role = documentSnapshot.get('role');
 
+      log(name);
       log(pass);
 
       if (password == pass) {
         await SharedPreferenceData.storeLoginData(
-            role: role, isLoggedIn: true, loginID: formattedloginID);
+            role: role, isLoggedIn: true, loginID: formattedloginID,userName: name);
         await SharedPreferenceData.getSharedPreferenceData();
         context.showCustomSnackBar("Login successful!", isError: false);
         if (role == 'teacher') {
